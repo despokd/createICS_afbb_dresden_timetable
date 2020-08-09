@@ -1,4 +1,3 @@
-Attribute VB_Name = "CreateICAL"
 '' Create a iCalendar from a timetable for AFBB trainees
 ''
 '' @author Kilian Domaratius
@@ -31,7 +30,7 @@ Sub StartMacro_CreateICAL()
     
     'Notify user in seconds + additional info
     Dim Msg As String
-        Msg = "Sie finden die Datei 'Kalendar-" & schoolClassName & "-" & (Format(CDate(lastUpdate), "ddmmyyyy")) & ".ics' im selben Ordner wie diese Excel-Datei. iCal erfolgreich in " & SecondsElapsed & " Sekunden erstellt für " & schoolClassName & " - Stand: " & lastUpdate
+        Msg = "Sie finden die Datei 'Kalendar-" & schoolClassName & "-" & (Format(CDate(lastUpdate), "ddmmyyyy")) & ".ics' im selben Ordner wie diese Excel-Datei. iCal erfolgreich in " & SecondsElapsed & " Sekunden erstellt fÃ¼r " & schoolClassName & " - Stand: " & lastUpdate
     Dim ButtonStyle
         ButtonStyle = vbOKOnly
     Dim Title As String
@@ -100,14 +99,14 @@ iCalString = iCalString & "BEGIN:VCALENDAR" & insertNewLine
 'End Calendar
 iCalString = iCalString & "END:VCALENDAR" & insertNewLine
 
-'insert iCal in File
-Dim filepath As String
-'MsgBox (Application.ActiveWorkbook.Path)
-filepath = Application.ActiveWorkbook.Path & "\Kalendar-" & schoolClassName & "-" & (Format(CDate(lastUpdate), "ddmmyyyy")) & ".ics"
+'let user save as iCal File
+Dim saveDialog As Variant
+saveDialog = Application.GetSaveAsFilename(InitialFileName:="Calendar-" & schoolClassName & "-" & (Format(CDate(lastUpdate), "ddmmyyyy")), FileFilter:="iCalendar(*.ics), *.ics")
 Set fs = CreateObject("Scripting.FileSystemObject")
-Set a = fs.CreateTextFile(filepath, True, True)
+Set a = fs.CreateTextFile(saveDialog, True, True)
 a.Write (iCalString)
 a.Close
+
 End Sub
 
 Function createDay(rowNumber As Integer, dayNumber As Integer) As String
@@ -252,12 +251,12 @@ For columnNumber = 3 To 12
     endEventString = endEventString & timeEndString & "Z"
         
     'get cell values or lessons
-    If Left(cells(rowNumber, columnNumber).Text, 1) = Chr(35) Then
+    If Left(Cells(rowNumber, columnNumber).Text, 1) = Chr(35) Then
         'for problems with Chr(35) = # -> #NV
         subject = "NV"
     Else
-        subject = cells(rowNumber, columnNumber).Text
-        teacher = cells(rowNumber + 1, columnNumber).Text
+        subject = Cells(rowNumber, columnNumber).Text
+        teacher = Cells(rowNumber + 1, columnNumber).Text
     End If
     'MsgBox ("Zeile: " & rowNumber & " Spalte: " & columnNumber & " Wert: " & subject)
     
@@ -282,15 +281,15 @@ For columnNumber = 3 To 12
             iCalString = iCalString & "SUMMARY:" & subject & insertNewLine
     
             'description
-            If cells(rowNumber, columnNumber) = "Sport" Then
-                description = description & "Bitte beachten Sie die Aushänge bezüglich des Sportunterrichts" & "\n\n"
+            If Cells(rowNumber, columnNumber) = "Sport" Then
+                description = description & "Bitte beachten Sie die AushÃ¤nge bezÃ¼glich des Sportunterrichts" & "\n\n"
             End If
             If teacher <> "" Then
                 description = description & subject & " mit " & teacher & "\n"
             Else
                 description = description & subject & "\n"
             End If
-            description = description & " Stand:" & lastUpdate & " für " & schoolClassName
+            description = description & " Stand:" & lastUpdate & " fÃ¼r " & schoolClassName
             iCalString = iCalString & "DESCRIPTION:" & description & insertNewLine
             
             'unique ID from Update+StartDateTime+EndDateTime in UNIX/Integer
@@ -301,7 +300,7 @@ For columnNumber = 3 To 12
             iCalString = iCalString & insertNewLine
             
             'location in words
-            If cells(rowNumber, columnNumber) = "Sport" Then
+            If Cells(rowNumber, columnNumber) = "Sport" Then
                 location = "XXL Dresden / AFBB Dresden"
             Else
                 location = "AFBB Dresden"
@@ -411,3 +410,4 @@ Function worksheetExists(shtName As String, Optional wb As Workbook) As Boolean
     On Error GoTo 0
     worksheetExists = Not sht Is Nothing
 End Function
+
