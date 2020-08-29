@@ -30,7 +30,7 @@ Sub StartMacro_CreateICAL()
     
     'Notify user in seconds + additional info
     Dim Msg As String
-        Msg = "Sie finden die Datei 'Kalendar-" & schoolClassName & "-" & (Format(CDate(lastUpdate), "ddmmyyyy")) & ".ics' im selben Ordner wie diese Excel-Datei. iCal erfolgreich in " & SecondsElapsed & " Sekunden erstellt für " & schoolClassName & " - Stand: " & lastUpdate
+        Msg = "iCal erfolgreich in " & SecondsElapsed & " Sekunden erstellt für " & schoolClassName & " - Stand: " & lastUpdate
     Dim ButtonStyle
         ButtonStyle = vbOKOnly
     Dim Title As String
@@ -257,6 +257,8 @@ For columnNumber = 3 To 12
     Else
         subject = Cells(rowNumber, columnNumber).Text
         teacher = Cells(rowNumber + 1, columnNumber).Text
+        'color
+        Cells(rowNumber, columnNumber).Interior.Color = RGB(255, 0, 0)
     End If
     'MsgBox ("Zeile: " & rowNumber & " Spalte: " & columnNumber & " Wert: " & subject)
     
@@ -289,7 +291,7 @@ For columnNumber = 3 To 12
             Else
                 description = description & subject & "\n"
             End If
-            description = description & " Stand:" & lastUpdate & " für " & schoolClassName
+            description = description & "Stand:" & lastUpdate & " für " & schoolClassName
             iCalString = iCalString & "DESCRIPTION:" & description & insertNewLine
             
             'unique ID from Update+StartDateTime+EndDateTime in UNIX/Integer
