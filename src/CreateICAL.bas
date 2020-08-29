@@ -21,7 +21,7 @@ Sub StartMacro_CreateICAL()
     StartTime = Timer
     
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    '   Start own code                                                       '
+    '   Start own code                                                       '                                                              '
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     createICAL
     
@@ -61,9 +61,11 @@ Dim iCalString As String
 'Create Calendar
 iCalString = iCalString & "BEGIN:VCALENDAR" & insertNewLine
     iCalString = iCalString & "VERSION:2.0" & insertNewLine
-    iCalString = iCalString & "PROID:-//tequilian//tequilian.despokd.com//DE" & insertNewLine 'change for author
-    iCalString = iCalString & "CALSCALE:GREGORIAN" & insertNewLine
+    iCalString = iCalString & "PROID:-//tequilian//tequilian.de//DE" & insertNewLine 'change for author
     iCalString = iCalString & "METHOD:REQUEST" & insertNewLine 'alternative: PUBLISH
+    iCalString = iCalString & "BEGIN:VTIMEZONE" & insertNewLine
+    iCalString = iCalString & "TZID:Europe/Berlin" & insertNewLine
+    iCalString = iCalString & "END:VTIMEZONE" & insertNewLine
     
     'Insert Events
     
@@ -168,49 +170,49 @@ For columnNumber = 3 To 12
     endEventString = Format(dayEvent, "yyyymmdd") & "T"
 
     
-    'set time
+    'set time (-2 hours for GTC Timezone)
     Select Case columnNumber
         Case 3
             '1 lesson 08:00-08:45
-            timeStartString = "080000"
-            timeEndString = "084500"
-            timeStart = TimeValue("08:00")
-            timeEnd = TimeValue("08:45")
+            timeStartString = "060000"
+            timeEndString = "064500"
+            timeStart = TimeValue("06:00")
+            timeEnd = TimeValue("06:45")
             
         Case 4
             '2 lesson 08:45-09:30
-            timeStartString = "084500"
-            timeEndString = "093000"
-            timeStart = TimeValue("08:45")
-            timeEnd = TimeValue("09:30")
+            timeStartString = "064500"
+            timeEndString = "073000"
+            timeStart = TimeValue("06:45")
+            timeEnd = TimeValue("07:30")
             
         Case 5
             '3 lesson 09:45-10:30
-            timeStartString = "094500"
-            timeEndString = "103000"
-            timeStart = TimeValue("09:45")
-            timeEnd = TimeValue("10:30")
+            timeStartString = "074500"
+            timeEndString = "083000"
+            timeStart = TimeValue("07:45")
+            timeEnd = TimeValue("08:30")
             
         Case 6
             '4 lesson 10:30-11:15
-            timeStartString = "103000"
-            timeEndString = "111500"
-            timeStart = TimeValue("10:30")
-            timeEnd = TimeValue("11:15")
+            timeStartString = "083000"
+            timeEndString = "091500"
+            timeStart = TimeValue("08:30")
+            timeEnd = TimeValue("09:15")
             
         Case 7
             '5 lesson 11:25-12:10
-            timeStartString = "112500"
-            timeEndString = "121000"
-            timeStart = TimeValue("11:25")
-            timeEnd = TimeValue("12:10")
+            timeStartString = "092500"
+            timeEndString = "101000"
+            timeStart = TimeValue("09:25")
+            timeEnd = TimeValue("10:10")
             
         Case 8
             '6 lesson 12:55-13:40
-            timeStartString = "125500"
-            timeEndString = "134000"
-            timeStart = TimeValue("12:55")
-            timeEnd = TimeValue("13:40")
+            timeStartString = "105500"
+            timeEndString = "114000"
+            timeStart = TimeValue("10:55")
+            timeEnd = TimeValue("11:40")
             
         Case 9
             '7 lesson 13:50-14:35
@@ -221,24 +223,24 @@ For columnNumber = 3 To 12
             
         Case 10
             '8 lesson 14:35-15:20
-            timeStartString = "143500"
-            timeEndString = "152000"
-            timeStart = TimeValue("14:35")
-            timeEnd = TimeValue("15:20")
+            timeStartString = "123500"
+            timeEndString = "132000"
+            timeStart = TimeValue("12:35")
+            timeEnd = TimeValue("13:20")
             
         Case 11
             '11 lesson 15:30-16:15
-            timeStartString = "153000"
-            timeEndString = "161500"
-            timeStart = TimeValue("15:30")
-            timeEnd = TimeValue("16:15")
+            timeStartString = "133000"
+            timeEndString = "141500"
+            timeStart = TimeValue("13:30")
+            timeEnd = TimeValue("14:15")
             
         Case 12
             '12 lesson 16:15-17:00
-            timeStartString = "161500"
-            timeEndString = "170000"
-            timeStart = TimeValue("16:15")
-            timeEnd = TimeValue("17:00")
+            timeStartString = "141500"
+            timeEndString = "150000"
+            timeStart = TimeValue("14:15")
+            timeEnd = TimeValue("15:00")
             
         Case Else
             'Error and end script
@@ -257,12 +259,21 @@ For columnNumber = 3 To 12
     Else
         subject = Cells(rowNumber, columnNumber).Text
         teacher = Cells(rowNumber + 1, columnNumber).Text
-        'color
-        Cells(rowNumber, columnNumber).Interior.Color = RGB(255, 0, 0)
+        
+        
+        'color cells to debug code
+        Dim RandomR As Integer
+        Dim RandomG As Integer
+        Dim RandomB As Integer
+        
+        RandomR = Int((250 - 0 + 1) * Rnd + 0)
+        RandomG = Int((250 - 0 + 1) * Rnd + 0)
+        RandomB = Int((250 - 0 + 1) * Rnd + 0)
+        Cells(rowNumber, columnNumber).Interior.Color = RGB(RandomR, RandomG, RandomB)
     End If
     'MsgBox ("Zeile: " & rowNumber & " Spalte: " & columnNumber & " Wert: " & subject)
     
-    'get event
+    'get eventö-.lQ,kmjn vcx
     Select Case subject
         Case ""
         Case "NV"
@@ -275,9 +286,9 @@ For columnNumber = 3 To 12
             'lessons at school
             iCalString = iCalString & "BEGIN:VEVENT" & insertNewLine
             
-            iCalString = iCalString & "DTSTART:" & startEventString & insertNewLine
-            iCalString = iCalString & "DTEND:" & endEventString & insertNewLine
-            iCalString = iCalString & "DTSTAMP:" & Format(CDate(lastUpdate), "yyyymmdd") & "T000000Z" & insertNewLine
+            iCalString = iCalString & "DTSTART;TZID=Europe/Berlin:" & startEventString & insertNewLine
+            iCalString = iCalString & "DTEND;TZID=Europe/Berlin:" & endEventString & insertNewLine
+            iCalString = iCalString & "DTSTAMP;TZID=Europe/Berlin:" & Format(CDate(lastUpdate), "yyyymmdd") & "T000000Z" & insertNewLine
             
             'title
             iCalString = iCalString & "SUMMARY:" & subject & insertNewLine
