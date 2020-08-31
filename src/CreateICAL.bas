@@ -216,10 +216,10 @@ For columnNumber = 3 To 12
             
         Case 9
             '7 lesson 13:50-14:35
-            timeStartString = "135000"
-            timeEndString = "143500"
-            timeStart = TimeValue("13:50")
-            timeEnd = TimeValue("14:35")
+            timeStartString = "115000"
+            timeEndString = "123500"
+            timeStart = TimeValue("11:50")
+            timeEnd = TimeValue("12:35")
             
         Case 10
             '8 lesson 14:35-15:20
