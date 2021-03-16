@@ -1,4 +1,4 @@
-# createICS_afbb_dresden_timetable
+# Create ICS of AfbB timetable
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)\
 Create a calendar with ICS-File for class timetables of AfbB gGmbH Dresden
 
